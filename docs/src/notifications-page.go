@@ -12,36 +12,36 @@ import (
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
 
-type notificationsPage struct {
+type NotificationsPage struct {
 	app.Compo
 
 	notificationPermission app.NotificationPermission
 }
 
-func newNotificationsPage() *notificationsPage {
-	return &notificationsPage{}
+func NewNotificationsPage() *NotificationsPage {
+	return &NotificationsPage{}
 }
 
-func (p *notificationsPage) OnPreRender(ctx app.Context) {
+func (p *NotificationsPage) OnPreRender(ctx app.Context) {
 	p.initPage(ctx)
 }
 
-func (p *notificationsPage) OnMount(ctx app.Context) {
+func (p *NotificationsPage) OnMount(ctx app.Context) {
 	p.notificationPermission = ctx.Notifications().Permission()
 	p.registerSubscription(ctx)
 }
 
-func (p *notificationsPage) OnNav(ctx app.Context) {
+func (p *NotificationsPage) OnNav(ctx app.Context) {
 	p.initPage(ctx)
 }
 
-func (p *notificationsPage) initPage(ctx app.Context) {
+func (p *NotificationsPage) initPage(ctx app.Context) {
 	ctx.Page().SetTitle("Receive And Display Notifications")
 	ctx.Page().SetDescription("Documentation about how receive and display notifications.")
 	analytics.Page("notifications", nil)
 }
 
-func (p *notificationsPage) Render() app.UI {
+func (p *NotificationsPage) Render() app.UI {
 	requestEnabled := ""
 	if p.notificationPermission != app.NotificationDefault {
 		requestEnabled = "disabled"
@@ -52,29 +52,29 @@ func (p *notificationsPage) Render() app.UI {
 		testEnabled = ""
 	}
 
-	return newPage().
+	return NewPage().
 		Title("Notifications").
 		Icon(bellSVG).
 		Index(
-			newIndexLink().Title("Enable Notifications"),
-			newIndexLink().Title("    Current Permission"),
-			newIndexLink().Title("    Request Permission"),
-			newIndexLink().Title("    Display Local Notifications"),
-			newIndexLink().Title("    Example"),
+			NewIndexLink().Title("Enable Notifications"),
+			NewIndexLink().Title("    Current Permission"),
+			NewIndexLink().Title("    Request Permission"),
+			NewIndexLink().Title("    Display Local Notifications"),
+			NewIndexLink().Title("    Example"),
 
 			app.Div().Class("separator"),
 
-			newIndexLink().Title("Push Notifications"),
-			newIndexLink().Title("    Getting Notification Subscription"),
-			newIndexLink().Title("    Registering Notification Subscription"),
-			newIndexLink().Title("    Sending Push Notification"),
+			NewIndexLink().Title("Push Notifications"),
+			NewIndexLink().Title("    Getting Notification Subscription"),
+			NewIndexLink().Title("    Registering Notification Subscription"),
+			NewIndexLink().Title("    Sending Push Notification"),
 
 			app.Div().Class("separator"),
 
-			newIndexLink().Title("Next"),
+			NewIndexLink().Title("Next"),
 		).
 		Content(
-			newRemoteMarkdownDoc().Src("/web/documents/notifications.md"),
+			NewRemoteMarkdownDoc().Src("/web/documents/notifications.md"),
 
 			app.P().Body(
 				app.Button().
@@ -91,16 +91,16 @@ func (p *notificationsPage) Render() app.UI {
 
 			app.Div().Class("separator"),
 
-			newRemoteMarkdownDoc().Src("/web/documents/notifications-push.md"),
+			NewRemoteMarkdownDoc().Src("/web/documents/notifications-push.md"),
 		)
 }
 
-func (p *notificationsPage) enableNotifications(ctx app.Context, e app.Event) {
+func (p *NotificationsPage) enableNotifications(ctx app.Context, e app.Event) {
 	p.notificationPermission = ctx.Notifications().RequestPermission()
 	p.registerSubscription(ctx)
 }
 
-func (p *notificationsPage) testNotification(ctx app.Context, e app.Event) {
+func (p *NotificationsPage) testNotification(ctx app.Context, e app.Event) {
 	n := rand.Intn(43)
 
 	ctx.Notifications().New(app.Notification{
@@ -110,7 +110,7 @@ func (p *notificationsPage) testNotification(ctx app.Context, e app.Event) {
 	})
 }
 
-func (p *notificationsPage) registerSubscription(ctx app.Context) {
+func (p *NotificationsPage) registerSubscription(ctx app.Context) {
 	if p.notificationPermission != app.NotificationGranted {
 		return
 	}

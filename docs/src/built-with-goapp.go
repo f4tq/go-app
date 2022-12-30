@@ -5,28 +5,28 @@ import (
 	"github.com/maxence-charriere/go-app/v9/pkg/ui"
 )
 
-type builtWithGoapp struct {
+type BuiltWithGoapp struct {
 	app.Compo
 
 	Iid    string
 	Iclass string
 }
 
-func newBuiltWithGoapp() *builtWithGoapp {
-	return &builtWithGoapp{}
+func NewBuiltWithGoapp() *BuiltWithGoapp {
+	return &BuiltWithGoapp{}
 }
 
-func (b *builtWithGoapp) ID(v string) *builtWithGoapp {
+func (b *BuiltWithGoapp) ID(v string) *BuiltWithGoapp {
 	b.Iid = v
 	return b
 }
 
-func (b *builtWithGoapp) Class(v string) *builtWithGoapp {
+func (b *BuiltWithGoapp) Class(v string) *BuiltWithGoapp {
 	b.Iclass = app.AppendClass(b.Iclass, v)
 	return b
 }
 
-func (b *builtWithGoapp) Render() app.UI {
+func (b *BuiltWithGoapp) Render() app.UI {
 	return app.Div().
 		Class(b.Iclass).
 		Body(

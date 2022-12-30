@@ -5,58 +5,58 @@ import (
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
 )
 
-type declarativeSyntaxPage struct {
+type DeclarativeSyntaxPage struct {
 	app.Compo
 }
 
-func newDeclarativeSyntaxPage() *declarativeSyntaxPage {
-	return &declarativeSyntaxPage{}
+func NewDeclarativeSyntaxPage() *DeclarativeSyntaxPage {
+	return &DeclarativeSyntaxPage{}
 }
 
-func (p *declarativeSyntaxPage) OnPreRender(ctx app.Context) {
+func (p *DeclarativeSyntaxPage) OnPreRender(ctx app.Context) {
 	p.initPage(ctx)
 }
 
-func (p *declarativeSyntaxPage) OnNav(ctx app.Context) {
+func (p *DeclarativeSyntaxPage) OnNav(ctx app.Context) {
 	p.initPage(ctx)
 }
 
-func (p *declarativeSyntaxPage) initPage(ctx app.Context) {
+func (p *DeclarativeSyntaxPage) initPage(ctx app.Context) {
 	ctx.Page().SetTitle("Customize Components with go-app Declarative Syntax")
 	ctx.Page().SetDescription("Documentation about how to customize components with go-app declarative syntax.")
 	analytics.Page("declarative-syntax", nil)
 }
 
-func (p *declarativeSyntaxPage) Render() app.UI {
-	return newPage().
+func (p *DeclarativeSyntaxPage) Render() app.UI {
+	return NewPage().
 		Title("Declarative Syntax").
 		Icon(keyboardSVG).
 		Index(
-			newIndexLink().Title("Intro"),
-			newIndexLink().Title("HTML Elements"),
-			newIndexLink().Title("    Create"),
-			newIndexLink().Title("    Standard Elements"),
-			newIndexLink().Title("    Self Closing Elements"),
-			newIndexLink().Title("    Attributes"),
-			newIndexLink().Title("    Style"),
-			newIndexLink().Title("    Event handlers"),
-			newIndexLink().Title("Raw elements"),
-			newIndexLink().Title("Nested Components"),
-			newIndexLink().Title("Condition"),
-			newIndexLink().Title("    If"),
-			newIndexLink().Title("    ElseIf"),
-			newIndexLink().Title("    Else"),
-			newIndexLink().Title("Range"),
-			newIndexLink().Title("    Slice"),
-			newIndexLink().Title("    Map"),
-			newIndexLink().Title("Form helpers"),
-			newIndexLink().Title("    ValueTo"),
+			NewIndexLink().Title("Intro"),
+			NewIndexLink().Title("HTML Elements"),
+			NewIndexLink().Title("    Create"),
+			NewIndexLink().Title("    Standard Elements"),
+			NewIndexLink().Title("    Self Closing Elements"),
+			NewIndexLink().Title("    Attributes"),
+			NewIndexLink().Title("    Style"),
+			NewIndexLink().Title("    Event handlers"),
+			NewIndexLink().Title("Raw elements"),
+			NewIndexLink().Title("Nested Components"),
+			NewIndexLink().Title("Condition"),
+			NewIndexLink().Title("    If"),
+			NewIndexLink().Title("    ElseIf"),
+			NewIndexLink().Title("    Else"),
+			NewIndexLink().Title("Range"),
+			NewIndexLink().Title("    Slice"),
+			NewIndexLink().Title("    Map"),
+			NewIndexLink().Title("Form helpers"),
+			NewIndexLink().Title("    ValueTo"),
 
 			app.Div().Class("separator"),
 
-			newIndexLink().Title("Next"),
+			NewIndexLink().Title("Next"),
 		).
 		Content(
-			newRemoteMarkdownDoc().Src("/web/documents/declarative-syntax.md"),
+			NewRemoteMarkdownDoc().Src("/web/documents/declarative-syntax.md"),
 		)
 }

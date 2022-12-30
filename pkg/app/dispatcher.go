@@ -101,7 +101,7 @@ type ClientDispatcher interface {
 // NewClientTester creates a testing dispatcher that simulates a
 // client environment. The given UI element is mounted upon creation.
 func NewClientTester(n UI) ClientDispatcher {
-	e := &engine{
+	e := &Engine{
 		ActionHandlers: actionHandlers,
 	}
 	e.init()
@@ -131,7 +131,7 @@ type ServerDispatcher interface {
 // NewServerTester creates a testing dispatcher that simulates a
 // client environment.
 func NewServerTester(n UI) ServerDispatcher {
-	e := &engine{
+	e := &Engine{
 		IsServerSide:   true,
 		ActionHandlers: actionHandlers,
 	}

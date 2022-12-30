@@ -29,7 +29,7 @@ func handleGetMarkdown(ctx app.Context, a app.Action) {
 	md.Err = nil
 	ctx.SetState(state, md)
 
-	res, err := get(ctx, path)
+	res, err := Get(ctx, path)
 	if err != nil {
 		md.Status = loadingErr
 		md.Err = errors.New("getting markdown failed").Wrap(err)

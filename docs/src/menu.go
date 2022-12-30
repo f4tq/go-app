@@ -5,7 +5,7 @@ import (
 	"github.com/maxence-charriere/go-app/v9/pkg/ui"
 )
 
-type menu struct {
+type Menu struct {
 	app.Compo
 
 	Iclass string
@@ -13,24 +13,24 @@ type menu struct {
 	appInstallable bool
 }
 
-func newMenu() *menu {
-	return &menu{}
+func NewMenu() *Menu {
+	return &Menu{}
 }
 
-func (m *menu) Class(v string) *menu {
+func (m *Menu) Class(v string) *Menu {
 	m.Iclass = app.AppendClass(m.Iclass, v)
 	return m
 }
 
-func (m *menu) OnNav(ctx app.Context) {
+func (m *Menu) OnNav(ctx app.Context) {
 	m.appInstallable = ctx.IsAppInstallable()
 }
 
-func (m *menu) OnAppInstallChange(ctx app.Context) {
+func (m *Menu) OnAppInstallChange(ctx app.Context) {
 	m.appInstallable = ctx.IsAppInstallable()
 }
 
-func (m *menu) Render() app.UI {
+func (m *Menu) Render() app.UI {
 	linkClass := "link heading fit unselectable"
 
 	isFocus := func(path string) string {
@@ -222,6 +222,6 @@ func (m *menu) Render() app.UI {
 		)
 }
 
-func (m *menu) installApp(ctx app.Context, e app.Event) {
+func (m *Menu) installApp(ctx app.Context, e app.Event) {
 	ctx.NewAction(installApp)
 }

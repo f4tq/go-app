@@ -8,7 +8,7 @@ import (
 )
 
 func TestEngineInit(t *testing.T) {
-	e := engine{}
+	e := Engine{}
 	e.init()
 	defer e.Close()
 
@@ -24,7 +24,7 @@ func TestEngineInit(t *testing.T) {
 }
 
 func TestEngineDispatch(t *testing.T) {
-	e := engine{}
+	e := Engine{}
 	e.init()
 	defer e.Close()
 
@@ -38,7 +38,7 @@ func TestEngineDispatch(t *testing.T) {
 }
 
 func TestEngineEmit(t *testing.T) {
-	e := engine{}
+	e := Engine{}
 	e.init()
 	defer e.Close()
 
@@ -64,7 +64,7 @@ func TestEngineEmit(t *testing.T) {
 
 func TestEngineHandleDispatch(t *testing.T) {
 	t.Run("update", func(t *testing.T) {
-		e := engine{}
+		e := Engine{}
 		e.init()
 		defer e.Close()
 
@@ -83,7 +83,7 @@ func TestEngineHandleDispatch(t *testing.T) {
 	})
 
 	t.Run("defer", func(t *testing.T) {
-		e := engine{}
+		e := Engine{}
 		e.init()
 		defer e.Close()
 
@@ -103,7 +103,7 @@ func TestEngineHandleDispatch(t *testing.T) {
 	})
 
 	t.Run("next", func(t *testing.T) {
-		e := engine{}
+		e := Engine{}
 		e.init()
 		defer e.Close()
 
@@ -123,7 +123,7 @@ func TestEngineHandleDispatch(t *testing.T) {
 }
 
 func TestEngineAddComponentUpdate(t *testing.T) {
-	e := engine{}
+	e := Engine{}
 	e.init()
 	defer e.Close()
 
@@ -145,7 +145,7 @@ func TestEngineAddComponentUpdate(t *testing.T) {
 }
 
 func TestPreventComponentUpdate(t *testing.T) {
-	e := engine{}
+	e := Engine{}
 	e.init()
 	defer e.Close()
 
@@ -161,7 +161,7 @@ func TestPreventComponentUpdate(t *testing.T) {
 }
 
 func TestEngineHandleComponentUpdates(t *testing.T) {
-	e := engine{}
+	e := Engine{}
 	e.init()
 	defer e.Close()
 
@@ -181,7 +181,7 @@ func TestEngineHandleComponentUpdates(t *testing.T) {
 }
 
 func TestEngineExecDeferableEvents(t *testing.T) {
-	e := engine{}
+	e := Engine{}
 	e.init()
 	defer e.Close()
 
@@ -213,7 +213,7 @@ func TestEngineHandlePost(t *testing.T) {
 	isHandleBCalled := false
 	isHandleCCalled := false
 
-	e := engine{
+	e := Engine{
 		ActionHandlers: map[string]ActionHandler{
 			"/test": func(ctx Context, a Action) {
 				isAppHandleCalled = true

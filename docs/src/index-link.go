@@ -6,7 +6,7 @@ import (
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
 )
 
-type indexLink struct {
+type IndexLink struct {
 	app.Compo
 
 	Iclass string
@@ -14,28 +14,28 @@ type indexLink struct {
 	Ihref  string
 }
 
-func newIndexLink() *indexLink {
-	return &indexLink{}
+func NewIndexLink() *IndexLink {
+	return &IndexLink{}
 }
 
-func (l *indexLink) Class(v string) *indexLink {
+func (l *IndexLink) Class(v string) *IndexLink {
 	l.Iclass = app.AppendClass(l.Iclass, v)
 	return l
 }
 
-func (l *indexLink) Title(v string) *indexLink {
+func (l *IndexLink) Title(v string) *IndexLink {
 	l.Ititle = v
 	return l
 }
 
-func (l *indexLink) Href(v string) *indexLink {
+func (l *IndexLink) Href(v string) *IndexLink {
 	l.Ihref = v
 	return l
 }
 
-func (l *indexLink) OnNav(ctx app.Context) {}
+func (l *IndexLink) OnNav(ctx app.Context) {}
 
-func (l *indexLink) Render() app.UI {
+func (l *IndexLink) Render() app.UI {
 	fragment := titleToFragment(l.Ititle)
 
 	href := l.Ihref

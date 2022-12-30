@@ -10,7 +10,7 @@ import (
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
 
-type engine struct {
+type Engine struct {
 	// The number of frame per seconds.
 	FrameRate int
 
@@ -51,18 +51,18 @@ type engine struct {
 	isFirstMount         bool
 }
 
-func (e *engine) Context() Context {
+func (e *Engine) Context() Context {
 	return makeContext(e.Body)
 }
 
-func (e *engine) Dispatch(d Dispatch) {
+func (e *Engine) Dispatch(d Dispatch) {
 	if d.Source == nil {
 		d.Source = e.Body
 	}
 	e.dispatches <- d
 }
 
-func (e *engine) Emit(src UI, fn func()) {
+func (e *Engine) Emit(src UI, fn func()) {
 	e.Dispatch(Dispatch{
 		Mode:   Next,
 		Source: src,
@@ -86,33 +86,33 @@ func (e *engine) Emit(src UI, fn func()) {
 	})
 }
 
-func (e *engine) Handle(actionName string, src UI, h ActionHandler) {
+func (e *Engine) Handle(actionName string, src UI, h ActionHandler) {
 	e.actions.handle(actionName, false, src, h)
 }
 
-func (e *engine) Post(a Action) {
+func (e *Engine) Post(a Action) {
 	e.Async(func() {
 		e.actions.post(a)
 	})
 }
 
-func (e *engine) SetState(state string, v any, opts ...StateOption) {
+func (e *Engine) SetState(state string, v any, opts ...StateOption) {
 	e.states.Set(state, v, opts...)
 }
 
-func (e *engine) GetState(state string, recv any) {
+func (e *Engine) GetState(state string, recv any) {
 	e.states.Get(state, recv)
 }
 
-func (e *engine) DelState(state string) {
+func (e *Engine) DelState(state string) {
 	e.states.Del(state)
 }
 
-func (e *engine) ObserveState(state string, elem UI) Observer {
+func (e *Engine) ObserveState(state string, elem UI) Observer {
 	return e.states.Observe(state, elem)
 }
 
-func (e *engine) Async(fn func()) {
+func (e *Engine) Async(fn func()) {
 	e.wait.Add(1)
 	go func() {
 		fn()
@@ -120,11 +120,11 @@ func (e *engine) Async(fn func()) {
 	}()
 }
 
-func (e *engine) Wait() {
+func (e *Engine) Wait() {
 	e.wait.Wait()
 }
 
-func (e *engine) Consume() {
+func (e *Engine) Consume() {
 	for {
 		e.Wait()
 
@@ -139,13 +139,13 @@ func (e *engine) Consume() {
 	}
 }
 
-func (e *engine) ConsumeNext() {
+func (e *Engine) ConsumeNext() {
 	e.Wait()
 	e.handleDispatch(<-e.dispatches)
 	e.handleFrame()
 }
 
-func (e *engine) Close() {
+func (e *Engine) Close() {
 	e.closeOnce.Do(func() {
 		e.Consume()
 		e.Wait()
@@ -156,7 +156,7 @@ func (e *engine) Close() {
 	})
 }
 
-func (e *engine) PreRender() {
+func (e *Engine) PreRender() {
 	e.Dispatch(Dispatch{
 		Mode:   Update,
 		Source: e.Body,
@@ -166,7 +166,7 @@ func (e *engine) PreRender() {
 	})
 }
 
-func (e *engine) Mount(v UI) {
+func (e *Engine) Mount(v UI) {
 	e.Dispatch(Dispatch{
 		Mode:   Update,
 		Source: e.Body,
@@ -194,7 +194,7 @@ func (e *engine) Mount(v UI) {
 	})
 }
 
-func (e *engine) Nav(u *url.URL) {
+func (e *Engine) Nav(u *url.URL) {
 	if p, ok := e.Page.(*requestPage); ok {
 		p.ReplaceURL(u)
 	}
@@ -208,7 +208,7 @@ func (e *engine) Nav(u *url.URL) {
 	})
 }
 
-func (e *engine) AppUpdate() {
+func (e *Engine) AppUpdate() {
 	e.Dispatch(Dispatch{
 		Mode:   Update,
 		Source: e.Body,
@@ -218,7 +218,7 @@ func (e *engine) AppUpdate() {
 	})
 }
 
-func (e *engine) AppInstallChange() {
+func (e *Engine) AppInstallChange() {
 	e.Dispatch(Dispatch{
 		Mode:   Update,
 		Source: e.Body,
@@ -228,7 +228,7 @@ func (e *engine) AppInstallChange() {
 	})
 }
 
-func (e *engine) AppResize() {
+func (e *Engine) AppResize() {
 	e.Dispatch(Dispatch{
 		Mode:   Update,
 		Source: e.Body,
@@ -238,7 +238,7 @@ func (e *engine) AppResize() {
 	})
 }
 
-func (e *engine) init() {
+func (e *Engine) init() {
 	e.initOnce.Do(func() {
 		if e.FrameRate <= 0 {
 			e.FrameRate = 60
@@ -284,27 +284,27 @@ func (e *engine) init() {
 	})
 }
 
-func (e *engine) getCurrentPage() Page {
+func (e *Engine) getCurrentPage() Page {
 	return e.Page
 }
 
-func (e *engine) getLocalStorage() BrowserStorage {
+func (e *Engine) getLocalStorage() BrowserStorage {
 	return e.LocalStorage
 }
 
-func (e *engine) getSessionStorage() BrowserStorage {
+func (e *Engine) getSessionStorage() BrowserStorage {
 	return e.SessionStorage
 }
 
-func (e *engine) isServerSide() bool {
+func (e *Engine) isServerSide() bool {
 	return e.IsServerSide
 }
 
-func (e *engine) resolveStaticResource(path string) string {
+func (e *Engine) resolveStaticResource(path string) string {
 	return e.StaticResourceResolver(path)
 }
 
-func (e *engine) addComponentUpdate(c Composer) {
+func (e *Engine) addComponentUpdate(c Composer) {
 	if c == nil || !c.Mounted() {
 		return
 	}
@@ -312,22 +312,22 @@ func (e *engine) addComponentUpdate(c Composer) {
 	e.componentUpdates[c] = true
 }
 
-func (e *engine) removeComponentUpdate(c Composer) {
+func (e *Engine) removeComponentUpdate(c Composer) {
 	delete(e.componentUpdates, c)
 }
 
-func (e *engine) preventComponentUpdate(c Composer) {
+func (e *Engine) preventComponentUpdate(c Composer) {
 	e.componentUpdateMutex.Lock()
 	defer e.componentUpdateMutex.Unlock()
 
 	e.componentUpdates[c] = false
 }
 
-func (e *engine) addDeferable(d Dispatch) {
+func (e *Engine) addDeferable(d Dispatch) {
 	e.deferables = append(e.deferables, d)
 }
 
-func (e *engine) start(ctx context.Context) {
+func (e *Engine) start(ctx context.Context) {
 	e.startOnce.Do(func() {
 		frameDuration := time.Second / time.Duration(e.FrameRate)
 		currentFrameDuration := frameDuration
@@ -365,7 +365,7 @@ func (e *engine) start(ctx context.Context) {
 	})
 }
 
-func (e *engine) handleDispatch(d Dispatch) {
+func (e *Engine) handleDispatch(d Dispatch) {
 	switch d.Mode {
 	case Update:
 		d.do()
@@ -379,12 +379,12 @@ func (e *engine) handleDispatch(d Dispatch) {
 	}
 }
 
-func (e *engine) handleFrame() {
+func (e *Engine) handleFrame() {
 	e.handleComponentUpdates()
 	e.handleDeferables()
 }
 
-func (e *engine) handleComponentUpdates() {
+func (e *Engine) handleComponentUpdates() {
 	e.componentUpdateMutex.Lock()
 	defer e.componentUpdateMutex.Unlock()
 
@@ -418,7 +418,7 @@ func (e *engine) handleComponentUpdates() {
 	e.componentUpdateQueue = e.componentUpdateQueue[:0]
 }
 
-func (e *engine) handleDeferables() {
+func (e *Engine) handleDeferables() {
 	for i := range e.deferables {
 		e.deferables[i].do()
 		e.deferables[i] = Dispatch{}

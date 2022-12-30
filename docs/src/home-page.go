@@ -6,53 +6,53 @@ import (
 	"github.com/maxence-charriere/go-app/v9/pkg/ui"
 )
 
-type homePage struct {
+type HomePage struct {
 	app.Compo
 }
 
-func newHomePage() *homePage {
-	return &homePage{}
+func NewHomePage() *HomePage {
+	return &HomePage{}
 }
 
-func (p *homePage) OnPreRender(ctx app.Context) {
+func (p *HomePage) OnPreRender(ctx app.Context) {
 	p.initPage(ctx)
 }
 
-func (p *homePage) OnNav(ctx app.Context) {
+func (p *HomePage) OnNav(ctx app.Context) {
 	p.initPage(ctx)
 }
 
-func (p *homePage) initPage(ctx app.Context) {
+func (p *HomePage) initPage(ctx app.Context) {
 	ctx.Page().SetTitle(defaultTitle)
 	ctx.Page().SetDescription(defaultDescription)
 	analytics.Page("home", nil)
 }
 
-func (p *homePage) Render() app.UI {
-	return newPage().
+func (p *HomePage) Render() app.UI {
+	return NewPage().
 		Title("go-app").
 		Icon("https://storage.googleapis.com/murlok-github/icon-192.png").
 		Index(
-			newIndexLink().Title("What is go-app?"),
-			newIndexLink().Title("Updates"),
-			newIndexLink().Title("Declarative Syntax"),
-			newIndexLink().Title("Standard HTTP Server"),
-			newIndexLink().Title("Other features"),
-			newIndexLink().Title("Built With go-app"),
+			NewIndexLink().Title("What is go-app?"),
+			NewIndexLink().Title("Updates"),
+			NewIndexLink().Title("Declarative Syntax"),
+			NewIndexLink().Title("Standard HTTP Server"),
+			NewIndexLink().Title("Other features"),
+			NewIndexLink().Title("Built With go-app"),
 
 			app.Div().Class("separator"),
 
-			newIndexLink().Title("Next"),
+			NewIndexLink().Title("Next"),
 		).
 		Content(
 			ui.Flow().
 				StretchItems().
 				Spacing(84).
 				Content(
-					newRemoteMarkdownDoc().
+					NewRemoteMarkdownDoc().
 						Class("fill").
 						Src("/web/documents/what-is-go-app.md"),
-					newRemoteMarkdownDoc().
+					NewRemoteMarkdownDoc().
 						Class("fill").
 						Class("updates").
 						Src("/web/documents/updates.md"),
@@ -60,14 +60,14 @@ func (p *homePage) Render() app.UI {
 
 			app.Div().Class("separator"),
 
-			newRemoteMarkdownDoc().Src("/web/documents/home.md"),
+			NewRemoteMarkdownDoc().Src("/web/documents/home.md"),
 
 			app.Div().Class("separator"),
 
-			newBuiltWithGoapp().ID("built-with-go-app"),
+			NewBuiltWithGoapp().ID("built-with-go-app"),
 
 			app.Div().Class("separator"),
 
-			newRemoteMarkdownDoc().Src("/web/documents/home-next.md"),
+			NewRemoteMarkdownDoc().Src("/web/documents/home-next.md"),
 		)
 }

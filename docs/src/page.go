@@ -13,7 +13,7 @@ const (
 	adsenseSlot   = "9307554044"
 )
 
-type page struct {
+type Page struct {
 	app.Compo
 
 	Iclass   string
@@ -25,50 +25,50 @@ type page struct {
 	updateAvailable bool
 }
 
-func newPage() *page {
-	return &page{}
+func NewPage() *Page {
+	return &Page{}
 }
 
-func (p *page) Index(v ...app.UI) *page {
+func (p *Page) Index(v ...app.UI) *Page {
 	p.Iindex = app.FilterUIElems(v...)
 	return p
 }
 
-func (p *page) Icon(v string) *page {
+func (p *Page) Icon(v string) *Page {
 	p.Iicon = v
 	return p
 }
 
-func (p *page) Title(v string) *page {
+func (p *Page) Title(v string) *Page {
 	p.Ititle = v
 	return p
 }
 
-func (p *page) Content(v ...app.UI) *page {
+func (p *Page) Content(v ...app.UI) *Page {
 	p.Icontent = app.FilterUIElems(v...)
 	return p
 }
 
-func (p *page) OnNav(ctx app.Context) {
+func (p *Page) OnNav(ctx app.Context) {
 	p.updateAvailable = ctx.AppUpdateAvailable()
 	ctx.Defer(scrollTo)
 }
 
-func (p *page) OnAppUpdate(ctx app.Context) {
+func (p *Page) OnAppUpdate(ctx app.Context) {
 	p.updateAvailable = ctx.AppUpdateAvailable()
 }
 
-func (p *page) Render() app.UI {
+func (p *Page) Render() app.UI {
 	return ui.Shell().
 		Class("fill").
 		Class("background").
 		HamburgerMenu(
-			newMenu().
+			NewMenu().
 				Class("fill").
 				Class("menu-hamburger-background"),
 		).
 		Menu(
-			newMenu().Class("fill"),
+			NewMenu().Class("fill"),
 		).
 		Index(
 			app.If(len(p.Iindex) != 0,
@@ -87,7 +87,7 @@ func (p *page) Render() app.UI {
 								app.Range(p.Iindex).Slice(func(i int) app.UI {
 									return p.Iindex[i]
 								}),
-								newIndexLink().Title("Report an Issue"),
+								NewIndexLink().Title("Report an Issue"),
 								app.Div().Class("separator"),
 							),
 					),
@@ -187,12 +187,12 @@ func (p *page) Render() app.UI {
 				).
 				PremiumHeight(200).
 				Premium(
-					newGithubSponsor().Class("fill"),
+					NewGithubSponsor().Class("fill"),
 				),
 		)
 }
 
-func (p *page) updateApp(ctx app.Context, e app.Event) {
+func (p *Page) updateApp(ctx app.Context, e app.Event) {
 	ctx.NewAction(updateApp)
 }
 

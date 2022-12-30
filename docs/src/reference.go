@@ -18,7 +18,7 @@ const (
 func handleGetReference(ctx app.Context, a app.Action) {
 	state := referenceState
 
-	var ref htmlContent
+	var ref HtmlContent
 	ctx.GetState(state, &ref)
 	switch ref.Status {
 	case loading, loaded:
@@ -29,7 +29,7 @@ func handleGetReference(ctx app.Context, a app.Action) {
 	ref.Err = nil
 	ctx.SetState(state, ref)
 
-	res, err := get(ctx, "/web/documents/reference.html")
+	res, err := Get(ctx, "/web/documents/reference.html")
 	if err != nil {
 		ref.Status = loadingErr
 		ref.Err = errors.New("getting reference failed").Wrap(err)
@@ -45,7 +45,7 @@ func handleGetReference(ctx app.Context, a app.Action) {
 		return
 	}
 
-	content, err := getHTML(doc, "#page")
+	content, err := GetHTML(doc, "#page")
 	if err != nil {
 		ref.Status = loadingErr
 		ref.Err = errors.New("generating reference content failed").Wrap(err)
@@ -57,7 +57,7 @@ func handleGetReference(ctx app.Context, a app.Action) {
 	content = strings.ReplaceAll(content, `title="Click to hide Index section"`, "")
 	content = strings.ReplaceAll(content, "/src/github.com/maxence-charriere/go-app/v9/", "https://github.com/maxence-charriere/go-app/blob/master/")
 
-	index, err := getHTML(doc, "#manual-nav")
+	index, err := GetHTML(doc, "#manual-nav")
 	if err != nil {
 		ref.Status = loadingErr
 		ref.Err = errors.New("generating reference content failed").Wrap(err)
@@ -71,22 +71,22 @@ func handleGetReference(ctx app.Context, a app.Action) {
 	ctx.SetState(state, ref)
 }
 
-type htmlContent struct {
+type HtmlContent struct {
 	Status  status
 	Err     error
 	Index   string
 	Content string
 }
 
-func getHTML(n *html.Node, class string) (string, error) {
-	section, err := findHTMLNode(n, class)
+func GetHTML(n *html.Node, class string) (string, error) {
+	section, err := FindHTMLNode(n, class)
 	if err != nil {
 		return "", errors.New("finding html node failed").
 			Tag("target", class).
 			Wrap(err)
 	}
 
-	normalizeHTMLNode(section)
+	NormalizeHTMLNode(section)
 
 	var b bytes.Buffer
 	if err := html.Render(&b, section); err != nil {
@@ -97,7 +97,7 @@ func getHTML(n *html.Node, class string) (string, error) {
 	return b.String(), nil
 }
 
-func findHTMLNode(n *html.Node, sel string) (*html.Node, error) {
+func FindHTMLNode(n *html.Node, sel string) (*html.Node, error) {
 	if n.Type == html.ElementNode {
 		for _, a := range n.Attr {
 			switch {
@@ -112,7 +112,7 @@ func findHTMLNode(n *html.Node, sel string) (*html.Node, error) {
 	}
 
 	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		if child, err := findHTMLNode(c, sel); err == nil {
+		if child, err := FindHTMLNode(c, sel); err == nil {
 			return child, nil
 		}
 	}
@@ -120,7 +120,7 @@ func findHTMLNode(n *html.Node, sel string) (*html.Node, error) {
 	return nil, errors.New("node not found")
 }
 
-func normalizeHTMLNode(n *html.Node) {
+func NormalizeHTMLNode(n *html.Node) {
 	if n.Type == html.ElementNode {
 		var id string
 
@@ -158,7 +158,7 @@ func normalizeHTMLNode(n *html.Node) {
 	}
 
 	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		normalizeHTMLNode(c)
+		NormalizeHTMLNode(c)
 	}
 }
 

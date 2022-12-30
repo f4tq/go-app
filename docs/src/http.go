@@ -9,7 +9,7 @@ import (
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
 
-func get(ctx app.Context, path string) ([]byte, error) {
+func Get(ctx app.Context, path string) ([]byte, error) {
 	url := path
 	if !strings.HasPrefix(url, "http") {
 		u := *ctx.Page().URL()

@@ -5,48 +5,48 @@ import (
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
 )
 
-type jsPage struct {
+type JsPage struct {
 	app.Compo
 }
 
-func newJSPage() *jsPage {
-	return &jsPage{}
+func NewJSPage() *JsPage {
+	return &JsPage{}
 }
 
-func (p *jsPage) OnPreRender(ctx app.Context) {
+func (p *JsPage) OnPreRender(ctx app.Context) {
 	p.initPage(ctx)
 }
 
-func (p *jsPage) OnNav(ctx app.Context) {
+func (p *JsPage) OnNav(ctx app.Context) {
 	p.initPage(ctx)
 }
 
-func (p *jsPage) initPage(ctx app.Context) {
+func (p *JsPage) initPage(ctx app.Context) {
 	ctx.Page().SetTitle("JavaScript Interoperability")
 	ctx.Page().SetDescription("Documentation about how to call JavaScript from Go or Go from JavaScript.")
 	analytics.Page("js", nil)
 }
 
-func (p *jsPage) Render() app.UI {
-	return newPage().
+func (p *JsPage) Render() app.UI {
+	return NewPage().
 		Title("JavaScript Interoperability").
 		Icon(jsSVG).
 		Index(
-			newIndexLink().Title("Intro"),
-			newIndexLink().Title("Include JS files"),
-			newIndexLink().Title("    Page's scope"),
-			newIndexLink().Title("    Inlined in Components"),
-			newIndexLink().Title("Using window global object"),
-			newIndexLink().Title("    Get element by ID"),
-			newIndexLink().Title("    Create JS object"),
-			newIndexLink().Title("Cancel an event"),
-			newIndexLink().Title("Get input value"),
+			NewIndexLink().Title("Intro"),
+			NewIndexLink().Title("Include JS files"),
+			NewIndexLink().Title("    Page's scope"),
+			NewIndexLink().Title("    Inlined in Components"),
+			NewIndexLink().Title("Using window global object"),
+			NewIndexLink().Title("    Get element by ID"),
+			NewIndexLink().Title("    Create JS object"),
+			NewIndexLink().Title("Cancel an event"),
+			NewIndexLink().Title("Get input value"),
 
 			app.Div().Class("separator"),
 
-			newIndexLink().Title("Next"),
+			NewIndexLink().Title("Next"),
 		).
 		Content(
-			newRemoteMarkdownDoc().Src("/web/documents/js.md"),
+			NewRemoteMarkdownDoc().Src("/web/documents/js.md"),
 		)
 }

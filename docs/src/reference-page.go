@@ -5,30 +5,30 @@ import (
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
 )
 
-type referencePage struct {
+type ReferencePage struct {
 	app.Compo
 }
 
-func newReferencePage() *referencePage {
-	return &referencePage{}
+func newReferencePage() *ReferencePage {
+	return &ReferencePage{}
 }
 
-func (p *referencePage) OnPreRender(ctx app.Context) {
+func (p *ReferencePage) OnPreRender(ctx app.Context) {
 	p.initPage(ctx)
 }
 
-func (p *referencePage) OnNav(ctx app.Context) {
+func (p *ReferencePage) OnNav(ctx app.Context) {
 	p.initPage(ctx)
 }
 
-func (p *referencePage) initPage(ctx app.Context) {
+func (p *ReferencePage) initPage(ctx app.Context) {
 	ctx.Page().SetTitle("Reference for building PWA with Go and WASM")
 	ctx.Page().SetDescription("Go-app API reference for building Progressive Web Apps (PWA) with Go (Golang) and WebAssembly (WASM).")
 	analytics.Page("reference", nil)
 }
 
-func (p *referencePage) Render() app.UI {
-	return newPage().
+func (p *ReferencePage) Render() app.UI {
+	return NewPage().
 		Title("Reference").
 		Icon(golangSVG).
 		Index(
@@ -37,12 +37,12 @@ func (p *referencePage) Render() app.UI {
 				Class(fragmentFocus("pkg-overview")).
 				Href("#pkg-overview").
 				Text("Overview"),
-			newReferenceContent().
+			NewReferenceContent().
 				Class("reference-index").
 				Index(true),
 			app.Div().Class("separator"),
 		).
 		Content(
-			newReferenceContent().Class("reference"),
+			NewReferenceContent().Class("reference"),
 		)
 }

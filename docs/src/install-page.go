@@ -5,46 +5,46 @@ import (
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
 )
 
-type installPage struct {
+type InstallPage struct {
 	app.Compo
 }
 
-func newInstallPage() *installPage {
-	return &installPage{}
+func NewInstallPage() *InstallPage {
+	return &InstallPage{}
 }
 
-func (p *installPage) OnPreRender(ctx app.Context) {
+func (p *InstallPage) OnPreRender(ctx app.Context) {
 	p.initPage(ctx)
 }
 
-func (p *installPage) OnNav(ctx app.Context) {
+func (p *InstallPage) OnNav(ctx app.Context) {
 	p.initPage(ctx)
 }
 
-func (p *installPage) initPage(ctx app.Context) {
+func (p *InstallPage) initPage(ctx app.Context) {
 	ctx.Page().SetTitle("Handling App Install")
 	ctx.Page().SetDescription("Documentation about how to install an app created with go-app.")
 	analytics.Page("install", nil)
 }
 
-func (p *installPage) Render() app.UI {
-	return newPage().
+func (p *InstallPage) Render() app.UI {
+	return NewPage().
 		Title("Install").
 		Icon(downloadSVG).
 		Index(
-			newIndexLink().Title("Intro"),
-			newIndexLink().Title("Desktop"),
-			newIndexLink().Title("IOS"),
-			newIndexLink().Title("Android"),
-			newIndexLink().Title("Programmatically"),
-			newIndexLink().Title("    Detect Install Support"),
-			newIndexLink().Title("    Display Install Popup"),
+			NewIndexLink().Title("Intro"),
+			NewIndexLink().Title("Desktop"),
+			NewIndexLink().Title("IOS"),
+			NewIndexLink().Title("Android"),
+			NewIndexLink().Title("Programmatically"),
+			NewIndexLink().Title("    Detect Install Support"),
+			NewIndexLink().Title("    Display Install Popup"),
 
 			app.Div().Class("separator"),
 
-			newIndexLink().Title("Next"),
+			NewIndexLink().Title("Next"),
 		).
 		Content(
-			newRemoteMarkdownDoc().Src("/web/documents/install.md"),
+			NewRemoteMarkdownDoc().Src("/web/documents/install.md"),
 		)
 }

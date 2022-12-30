@@ -5,46 +5,46 @@ import (
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
 )
 
-type statesPage struct {
+type StatesPage struct {
 	app.Compo
 }
 
-func newStatesPage() *statesPage {
-	return &statesPage{}
+func NewStatesPage() *StatesPage {
+	return &StatesPage{}
 }
 
-func (p *statesPage) OnPreRender(ctx app.Context) {
+func (p *StatesPage) OnPreRender(ctx app.Context) {
 	p.initPage(ctx)
 }
 
-func (p *statesPage) OnNav(ctx app.Context) {
+func (p *StatesPage) OnNav(ctx app.Context) {
 	p.initPage(ctx)
 }
 
-func (p *statesPage) initPage(ctx app.Context) {
+func (p *StatesPage) initPage(ctx app.Context) {
 	ctx.Page().SetTitle("State Management")
 	ctx.Page().SetDescription("Documentation about how to set and observe states.")
 	analytics.Page("states", nil)
 }
 
-func (p *statesPage) Render() app.UI {
-	return newPage().
+func (p *StatesPage) Render() app.UI {
+	return NewPage().
 		Title("State Management").
 		Icon(stateSVG).
 		Index(
-			newIndexLink().Title("What is a state?"),
-			newIndexLink().Title("Set"),
-			newIndexLink().Title("    Options"),
-			newIndexLink().Title("Observe"),
-			newIndexLink().Title("    Conditional Observation"),
-			newIndexLink().Title("    Additional Instructions"),
-			newIndexLink().Title("Get"),
+			NewIndexLink().Title("What is a state?"),
+			NewIndexLink().Title("Set"),
+			NewIndexLink().Title("    Options"),
+			NewIndexLink().Title("Observe"),
+			NewIndexLink().Title("    Conditional Observation"),
+			NewIndexLink().Title("    Additional Instructions"),
+			NewIndexLink().Title("Get"),
 
 			app.Div().Class("separator"),
 
-			newIndexLink().Title("Next"),
+			NewIndexLink().Title("Next"),
 		).
 		Content(
-			newRemoteMarkdownDoc().Src("/web/documents/states.md"),
+			NewRemoteMarkdownDoc().Src("/web/documents/states.md"),
 		)
 }

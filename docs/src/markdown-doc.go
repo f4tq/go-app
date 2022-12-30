@@ -10,7 +10,7 @@ import (
 	"github.com/maxence-charriere/go-app/v9/pkg/ui"
 )
 
-type markdownDoc struct {
+type MarkdownDoc struct {
 	app.Compo
 
 	Iid    string
@@ -18,34 +18,34 @@ type markdownDoc struct {
 	Imd    string
 }
 
-func newMarkdownDoc() *markdownDoc {
-	return &markdownDoc{}
+func NewMarkdownDoc() *MarkdownDoc {
+	return &MarkdownDoc{}
 }
 
-func (d *markdownDoc) ID(v string) *markdownDoc {
+func (d *MarkdownDoc) ID(v string) *MarkdownDoc {
 	d.Iid = v
 	return d
 }
 
-func (d *markdownDoc) Class(v string) *markdownDoc {
+func (d *MarkdownDoc) Class(v string) *MarkdownDoc {
 	d.Iclass = app.AppendClass(d.Iclass, v)
 	return d
 }
 
-func (d *markdownDoc) MD(v string) *markdownDoc {
+func (d *MarkdownDoc) MD(v string) *MarkdownDoc {
 	d.Imd = fmt.Sprintf(`<div class="markdown">%s</div>`, parseMarkdown([]byte(v)))
 	return d
 }
 
-func (d *markdownDoc) OnMount(ctx app.Context) {
+func (d *MarkdownDoc) OnMount(ctx app.Context) {
 	ctx.Defer(d.highlightCode)
 }
 
-func (d *markdownDoc) OnUpdate(ctx app.Context) {
+func (d *MarkdownDoc) OnUpdate(ctx app.Context) {
 	ctx.Defer(d.highlightCode)
 }
 
-func (d *markdownDoc) Render() app.UI {
+func (d *MarkdownDoc) Render() app.UI {
 	return app.Div().
 		ID(d.Iid).
 		Class(d.Iclass).
@@ -54,7 +54,7 @@ func (d *markdownDoc) Render() app.UI {
 		)
 }
 
-func (d *markdownDoc) highlightCode(ctx app.Context) {
+func (d *MarkdownDoc) highlightCode(ctx app.Context) {
 	app.Window().Get("Prism").Call("highlightAll")
 }
 
@@ -64,7 +64,7 @@ func parseMarkdown(md []byte) []byte {
 	return markdown.ToHTML(md, parser, nil)
 }
 
-type remoteMarkdownDoc struct {
+type RemoteMarkdownDoc struct {
 	app.Compo
 
 	Iid    string
@@ -74,34 +74,34 @@ type remoteMarkdownDoc struct {
 	md markdownContent
 }
 
-func newRemoteMarkdownDoc() *remoteMarkdownDoc {
-	return &remoteMarkdownDoc{}
+func NewRemoteMarkdownDoc() *RemoteMarkdownDoc {
+	return &RemoteMarkdownDoc{}
 }
 
-func (d *remoteMarkdownDoc) ID(v string) *remoteMarkdownDoc {
+func (d *RemoteMarkdownDoc) ID(v string) *RemoteMarkdownDoc {
 	d.Iid = v
 	return d
 }
 
-func (d *remoteMarkdownDoc) Class(v string) *remoteMarkdownDoc {
+func (d *RemoteMarkdownDoc) Class(v string) *RemoteMarkdownDoc {
 	d.Iclass = app.AppendClass(d.Iclass, v)
 	return d
 }
 
-func (d *remoteMarkdownDoc) Src(v string) *remoteMarkdownDoc {
+func (d *RemoteMarkdownDoc) Src(v string) *RemoteMarkdownDoc {
 	d.Isrc = v
 	return d
 }
 
-func (d *remoteMarkdownDoc) OnMount(ctx app.Context) {
+func (d *RemoteMarkdownDoc) OnMount(ctx app.Context) {
 	d.load(ctx)
 }
 
-func (d *remoteMarkdownDoc) OnUpdate(ctx app.Context) {
+func (d *RemoteMarkdownDoc) OnUpdate(ctx app.Context) {
 	d.load(ctx)
 }
 
-func (d *remoteMarkdownDoc) load(ctx app.Context) {
+func (d *RemoteMarkdownDoc) load(ctx app.Context) {
 	src := d.Isrc
 	ctx.ObserveState(markdownState(src)).
 		While(func() bool {
@@ -115,7 +115,7 @@ func (d *remoteMarkdownDoc) load(ctx app.Context) {
 	ctx.NewAction(getMarkdown, app.T("path", d.Isrc))
 }
 
-func (d *remoteMarkdownDoc) Render() app.UI {
+func (d *RemoteMarkdownDoc) Render() app.UI {
 	return app.Div().
 		ID(d.Iid).
 		Class(d.Iclass).
@@ -127,7 +127,7 @@ func (d *remoteMarkdownDoc) Render() app.UI {
 				Err(d.md.Err).
 				Label(fmt.Sprintf("Loading %s...", filepath.Base(d.Isrc))),
 			app.If(d.md.Status == loaded,
-				newMarkdownDoc().
+				NewMarkdownDoc().
 					Class("fill").
 					MD(d.md.Data),
 			).Else(),

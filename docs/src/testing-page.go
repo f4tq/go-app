@@ -5,44 +5,44 @@ import (
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
 )
 
-type testingPage struct {
+type TestingPage struct {
 	app.Compo
 }
 
-func newTestingPage() *testingPage {
-	return &testingPage{}
+func NewTestingPage() *TestingPage {
+	return &TestingPage{}
 }
 
-func (p *testingPage) OnPreRender(ctx app.Context) {
+func (p *TestingPage) OnPreRender(ctx app.Context) {
 	p.initPage(ctx)
 }
 
-func (p *testingPage) OnNav(ctx app.Context) {
+func (p *TestingPage) OnNav(ctx app.Context) {
 	p.initPage(ctx)
 }
 
-func (p *testingPage) initPage(ctx app.Context) {
+func (p *TestingPage) initPage(ctx app.Context) {
 	ctx.Page().SetTitle("Testing Components")
 	ctx.Page().SetDescription("Documentation about how to unit test components created with go-app.")
 	analytics.Page("testing", nil)
 }
 
-func (p *testingPage) Render() app.UI {
-	return newPage().
+func (p *TestingPage) Render() app.UI {
+	return NewPage().
 		Title("Testing").
 		Icon(testSVG).
 		Index(
-			newIndexLink().Title("Intro"),
-			newIndexLink().Title("Component server prerendering"),
-			newIndexLink().Title("Component client lifecycle"),
-			newIndexLink().Title("Asynchronous operations"),
-			newIndexLink().Title("UI elements"),
+			NewIndexLink().Title("Intro"),
+			NewIndexLink().Title("Component server prerendering"),
+			NewIndexLink().Title("Component client lifecycle"),
+			NewIndexLink().Title("Asynchronous operations"),
+			NewIndexLink().Title("UI elements"),
 
 			app.Div().Class("separator"),
 
-			newIndexLink().Title("Next"),
+			NewIndexLink().Title("Next"),
 		).
 		Content(
-			newRemoteMarkdownDoc().Src("/web/documents/testing.md"),
+			NewRemoteMarkdownDoc().Src("/web/documents/testing.md"),
 		)
 }

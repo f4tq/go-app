@@ -5,22 +5,22 @@ import (
 	"github.com/maxence-charriere/go-app/v9/pkg/ui"
 )
 
-type githubSponsor struct {
+type GithubSponsor struct {
 	app.Compo
 
 	Iclass string
 }
 
-func newGithubSponsor() *githubSponsor {
-	return &githubSponsor{}
+func NewGithubSponsor() *GithubSponsor {
+	return &GithubSponsor{}
 }
 
-func (s *githubSponsor) Class(v string) *githubSponsor {
+func (s *GithubSponsor) Class(v string) *GithubSponsor {
 	s.Iclass = app.AppendClass(s.Iclass, v)
 	return s
 }
 
-func (s *githubSponsor) Render() app.UI {
+func (s *GithubSponsor) Render() app.UI {
 	return ui.Stack().
 		Class(s.Iclass).
 		Center().

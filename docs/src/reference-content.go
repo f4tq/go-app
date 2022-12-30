@@ -5,49 +5,49 @@ import (
 	"github.com/maxence-charriere/go-app/v9/pkg/ui"
 )
 
-type referenceContent struct {
+type ReferenceContent struct {
 	app.Compo
 
 	Iid    string
 	Iclass string
 	Iindex bool
 
-	content         htmlContent
+	content         HtmlContent
 	currentFragment string
 }
 
-func newReferenceContent() *referenceContent {
-	return &referenceContent{}
+func NewReferenceContent() *ReferenceContent {
+	return &ReferenceContent{}
 }
 
-func (c *referenceContent) ID(v string) *referenceContent {
+func (c *ReferenceContent) ID(v string) *ReferenceContent {
 	c.Iid = v
 	return c
 }
 
-func (c *referenceContent) Class(v string) *referenceContent {
+func (c *ReferenceContent) Class(v string) *ReferenceContent {
 	c.Iclass = app.AppendClass(c.Iclass, v)
 	return c
 }
 
-func (c *referenceContent) Index(v bool) *referenceContent {
+func (c *ReferenceContent) Index(v bool) *ReferenceContent {
 	c.Iindex = v
 	return c
 }
 
-func (c *referenceContent) OnPreRender(ctx app.Context) {
+func (c *ReferenceContent) OnPreRender(ctx app.Context) {
 	c.load(ctx)
 }
 
-func (c *referenceContent) OnMount(ctx app.Context) {
+func (c *ReferenceContent) OnMount(ctx app.Context) {
 	c.load(ctx)
 }
 
-func (c *referenceContent) OnNav(ctx app.Context) {
+func (c *ReferenceContent) OnNav(ctx app.Context) {
 	c.handleFragment(ctx)
 }
 
-func (c *referenceContent) load(ctx app.Context) {
+func (c *ReferenceContent) load(ctx app.Context) {
 	ctx.ObserveState(referenceState).
 		OnChange(func() {
 			ctx.Defer(c.handleFragment)
@@ -58,7 +58,7 @@ func (c *referenceContent) load(ctx app.Context) {
 	ctx.NewAction(getReference)
 }
 
-func (c *referenceContent) Render() app.UI {
+func (c *ReferenceContent) Render() app.UI {
 	loaderSize := 60
 	loaderSpacing := 18
 	if c.Iindex {
@@ -88,7 +88,7 @@ func (c *referenceContent) Render() app.UI {
 		)
 }
 
-func (c *referenceContent) handleFragment(ctx app.Context) {
+func (c *ReferenceContent) handleFragment(ctx app.Context) {
 	if !c.Iindex {
 		return
 	}
@@ -98,7 +98,7 @@ func (c *referenceContent) handleFragment(ctx app.Context) {
 	c.focusCurrentIndex(ctx)
 }
 
-func (c *referenceContent) unfocusCurrentIndex(ctx app.Context) {
+func (c *ReferenceContent) unfocusCurrentIndex(ctx app.Context) {
 	link := app.Window().GetElementByID(refLinkID(c.currentFragment))
 	if !link.Truthy() {
 		return
@@ -106,7 +106,7 @@ func (c *referenceContent) unfocusCurrentIndex(ctx app.Context) {
 	link.Set("className", "")
 }
 
-func (c *referenceContent) focusCurrentIndex(ctx app.Context) {
+func (c *ReferenceContent) focusCurrentIndex(ctx app.Context) {
 	fragment := ctx.Page().URL().Fragment
 	link := app.Window().GetElementByID(refLinkID(fragment))
 	if !link.Truthy() {
@@ -116,7 +116,7 @@ func (c *referenceContent) focusCurrentIndex(ctx app.Context) {
 	c.currentFragment = fragment
 }
 
-func (c *referenceContent) scrollTo(ctx app.Context) {
+func (c *ReferenceContent) scrollTo(ctx app.Context) {
 	id := ctx.Page().URL().Fragment
 	if c.Iindex {
 		id = refLinkID(id)

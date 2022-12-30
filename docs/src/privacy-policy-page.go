@@ -5,44 +5,44 @@ import (
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
 )
 
-type privacyPolicyPage struct {
+type PrivacyPolicyPage struct {
 	app.Compo
 }
 
-func newPrivacyPolicyPage() *privacyPolicyPage {
-	return &privacyPolicyPage{}
+func NewPrivacyPolicyPage() *PrivacyPolicyPage {
+	return &PrivacyPolicyPage{}
 }
 
-func (p *privacyPolicyPage) OnPreRender(ctx app.Context) {
+func (p *PrivacyPolicyPage) OnPreRender(ctx app.Context) {
 	p.initPage(ctx)
 }
 
-func (p *privacyPolicyPage) OnNav(ctx app.Context) {
+func (p *PrivacyPolicyPage) OnNav(ctx app.Context) {
 	p.initPage(ctx)
 }
 
-func (p *privacyPolicyPage) initPage(ctx app.Context) {
+func (p *PrivacyPolicyPage) initPage(ctx app.Context) {
 	ctx.Page().SetTitle("Privacy Policy")
 	ctx.Page().SetDescription("go-app documentation privacy policy.")
 	analytics.Page("privacy-policy", nil)
 }
 
-func (p *privacyPolicyPage) Render() app.UI {
-	return newPage().
+func (p *PrivacyPolicyPage) Render() app.UI {
+	return NewPage().
 		Title("Privacy Policy").
 		Icon(userLockSVG).
 		Index(
-			newIndexLink().Title("Intro"),
-			newIndexLink().Title("Personal Data"),
-			newIndexLink().Title("Log Data"),
-			newIndexLink().Title("Cookies"),
-			newIndexLink().Title("Service Providers"),
-			newIndexLink().Title("Links to Other Sites"),
-			newIndexLink().Title("Changes to this Privacy Policy"),
+			NewIndexLink().Title("Intro"),
+			NewIndexLink().Title("Personal Data"),
+			NewIndexLink().Title("Log Data"),
+			NewIndexLink().Title("Cookies"),
+			NewIndexLink().Title("Service Providers"),
+			NewIndexLink().Title("Links to Other Sites"),
+			NewIndexLink().Title("Changes to this Privacy Policy"),
 
 			app.Div().Class("separator"),
 		).
 		Content(
-			newRemoteMarkdownDoc().Src("/web/documents/privacy-policy.md"),
+			NewRemoteMarkdownDoc().Src("/web/documents/privacy-policy.md"),
 		)
 }

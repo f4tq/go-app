@@ -5,53 +5,53 @@ import (
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
 )
 
-type componentsPage struct {
+type ComponentsPage struct {
 	app.Compo
 }
 
-func newComponentsPage() *componentsPage {
-	return &componentsPage{}
+func NewComponentsPage() *ComponentsPage {
+	return &ComponentsPage{}
 }
 
-func (p *componentsPage) OnPreRender(ctx app.Context) {
+func (p *ComponentsPage) OnPreRender(ctx app.Context) {
 	p.initPage(ctx)
 }
 
-func (p *componentsPage) OnNav(ctx app.Context) {
+func (p *ComponentsPage) OnNav(ctx app.Context) {
 	p.initPage(ctx)
 }
 
-func (p *componentsPage) initPage(ctx app.Context) {
+func (p *ComponentsPage) initPage(ctx app.Context) {
 	ctx.Page().SetTitle("Building Components: Customizable, Independent, and Reusable UI Elements")
 	ctx.Page().SetDescription("Documentation about building customizable, independent, and reusable UI elements.")
 	analytics.Page("components", nil)
 }
 
-func (p *componentsPage) Render() app.UI {
-	return newPage().
+func (p *ComponentsPage) Render() app.UI {
+	return NewPage().
 		Title("Components").
 		Icon(gridSVG).
 		Index(
-			newIndexLink().Title("What is a Component?"),
-			newIndexLink().Title("Create"),
-			newIndexLink().Title("Customize Look"),
-			newIndexLink().Title("Fields"),
-			newIndexLink().Title("    Exported vs Unexported"),
-			newIndexLink().Title("    How chose between Exported and Unexported?"),
-			newIndexLink().Title("Lifecycle Events"),
-			newIndexLink().Title("    PreRender"),
-			newIndexLink().Title("    Mount"),
-			newIndexLink().Title("    Nav"),
-			newIndexLink().Title("    Dismount"),
-			newIndexLink().Title("    Reference"),
-			newIndexLink().Title("Updates"),
-			newIndexLink().Title("    Manually Trigger an Update"),
+			NewIndexLink().Title("What is a Component?"),
+			NewIndexLink().Title("Create"),
+			NewIndexLink().Title("Customize Look"),
+			NewIndexLink().Title("Fields"),
+			NewIndexLink().Title("    Exported vs Unexported"),
+			NewIndexLink().Title("    How chose between Exported and Unexported?"),
+			NewIndexLink().Title("Lifecycle Events"),
+			NewIndexLink().Title("    PreRender"),
+			NewIndexLink().Title("    Mount"),
+			NewIndexLink().Title("    Nav"),
+			NewIndexLink().Title("    Dismount"),
+			NewIndexLink().Title("    Reference"),
+			NewIndexLink().Title("Updates"),
+			NewIndexLink().Title("    Manually Trigger an Update"),
 
 			app.Div().Class("separator"),
 
-			newIndexLink().Title("Next"),
+			NewIndexLink().Title("Next"),
 		).
 		Content(
-			newRemoteMarkdownDoc().Src("/web/documents/components.md"),
+			NewRemoteMarkdownDoc().Src("/web/documents/components.md"),
 		)
 }
