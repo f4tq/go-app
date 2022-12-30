@@ -104,7 +104,7 @@ func NewClientTester(n UI) ClientDispatcher {
 	e := &Engine{
 		ActionHandlers: actionHandlers,
 	}
-	e.init()
+	e.Once()
 	e.Mount(n)
 	e.Consume()
 	return e
@@ -135,7 +135,7 @@ func NewServerTester(n UI) ServerDispatcher {
 		IsServerSide:   true,
 		ActionHandlers: actionHandlers,
 	}
-	e.init()
+	e.Once()
 	e.Mount(n)
 	e.Consume()
 	return e

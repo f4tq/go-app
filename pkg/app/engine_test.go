@@ -9,7 +9,7 @@ import (
 
 func TestEngineInit(t *testing.T) {
 	e := Engine{}
-	e.init()
+	e.Once()
 	defer e.Close()
 
 	assert.NotZero(t, e.FrameRate)
@@ -25,7 +25,7 @@ func TestEngineInit(t *testing.T) {
 
 func TestEngineDispatch(t *testing.T) {
 	e := Engine{}
-	e.init()
+	e.Once()
 	defer e.Close()
 
 	e.Dispatch(Dispatch{})
@@ -39,7 +39,7 @@ func TestEngineDispatch(t *testing.T) {
 
 func TestEngineEmit(t *testing.T) {
 	e := Engine{}
-	e.init()
+	e.Once()
 	defer e.Close()
 
 	foo := &foo{Bar: "bar"}
@@ -65,7 +65,7 @@ func TestEngineEmit(t *testing.T) {
 func TestEngineHandleDispatch(t *testing.T) {
 	t.Run("update", func(t *testing.T) {
 		e := Engine{}
-		e.init()
+		e.Once()
 		defer e.Close()
 
 		bar := &bar{}
@@ -84,7 +84,7 @@ func TestEngineHandleDispatch(t *testing.T) {
 
 	t.Run("defer", func(t *testing.T) {
 		e := Engine{}
-		e.init()
+		e.Once()
 		defer e.Close()
 
 		bar := &bar{}
@@ -104,7 +104,7 @@ func TestEngineHandleDispatch(t *testing.T) {
 
 	t.Run("next", func(t *testing.T) {
 		e := Engine{}
-		e.init()
+		e.Once()
 		defer e.Close()
 
 		bar := &bar{}
@@ -124,7 +124,7 @@ func TestEngineHandleDispatch(t *testing.T) {
 
 func TestEngineAddComponentUpdate(t *testing.T) {
 	e := Engine{}
-	e.init()
+	e.Once()
 	defer e.Close()
 
 	h := &hello{}
@@ -146,7 +146,7 @@ func TestEngineAddComponentUpdate(t *testing.T) {
 
 func TestPreventComponentUpdate(t *testing.T) {
 	e := Engine{}
-	e.init()
+	e.Once()
 	defer e.Close()
 
 	h := &hello{}
@@ -162,7 +162,7 @@ func TestPreventComponentUpdate(t *testing.T) {
 
 func TestEngineHandleComponentUpdates(t *testing.T) {
 	e := Engine{}
-	e.init()
+	e.Once()
 	defer e.Close()
 
 	foo := &foo{Bar: "bar"}
@@ -182,7 +182,7 @@ func TestEngineHandleComponentUpdates(t *testing.T) {
 
 func TestEngineExecDeferableEvents(t *testing.T) {
 	e := Engine{}
-	e.init()
+	e.Once()
 	defer e.Close()
 
 	h := &hello{}
@@ -220,7 +220,7 @@ func TestEngineHandlePost(t *testing.T) {
 			},
 		},
 	}
-	e.init()
+	e.Once()
 	defer e.Close()
 
 	h := &hello{}

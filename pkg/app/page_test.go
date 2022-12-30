@@ -8,7 +8,7 @@ import (
 )
 
 func TestRequestPage(t *testing.T) {
-	testPage(t, &requestPage{
+	testPage(t, &RequestPage{
 		width:  42,
 		height: 21,
 		url:    &url.URL{Path: "/"},
@@ -20,7 +20,7 @@ func TestBrowserPage(t *testing.T) {
 
 	client := NewClientTester(Div())
 	defer client.Close()
-	testPage(t, browserPage{
+	testPage(t, BrowserPage{
 		dispatcher: client,
 	})
 }

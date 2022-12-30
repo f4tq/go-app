@@ -58,7 +58,7 @@ type Page interface {
 	Size() (w int, h int)
 }
 
-type requestPage struct {
+type RequestPage struct {
 	title        string
 	lang         string
 	description  string
@@ -71,88 +71,88 @@ type requestPage struct {
 	height       int
 }
 
-func (p *requestPage) Title() string {
+func (p *RequestPage) Title() string {
 	return p.title
 }
 
-func (p *requestPage) SetTitle(v string) {
+func (p *RequestPage) SetTitle(v string) {
 	p.title = v
 }
 
-func (p *requestPage) Lang() string {
+func (p *RequestPage) Lang() string {
 	return p.lang
 }
 
-func (p *requestPage) SetLang(v string) {
+func (p *RequestPage) SetLang(v string) {
 	p.lang = v
 }
 
-func (p *requestPage) Description() string {
+func (p *RequestPage) Description() string {
 	return p.description
 }
 
-func (p *requestPage) SetDescription(v string) {
+func (p *RequestPage) SetDescription(v string) {
 	p.description = v
 }
 
-func (p *requestPage) Author() string {
+func (p *RequestPage) Author() string {
 	return p.author
 }
 
-func (p *requestPage) SetAuthor(v string) {
+func (p *RequestPage) SetAuthor(v string) {
 	p.author = v
 }
 
-func (p *requestPage) Keywords() string {
+func (p *RequestPage) Keywords() string {
 	return p.keywords
 }
 
-func (p *requestPage) SetKeywords(v ...string) {
+func (p *RequestPage) SetKeywords(v ...string) {
 	p.keywords = strings.Join(v, ", ")
 }
 
-func (p *requestPage) SetLoadingLabel(v string) {
+func (p *RequestPage) SetLoadingLabel(v string) {
 	p.loadingLabel = v
 }
 
-func (p *requestPage) Image() string {
+func (p *RequestPage) Image() string {
 	return p.image
 }
 
-func (p *requestPage) SetImage(v string) {
+func (p *RequestPage) SetImage(v string) {
 	p.image = v
 }
 
-func (p *requestPage) URL() *url.URL {
+func (p *RequestPage) URL() *url.URL {
 	return p.url
 }
 
-func (p *requestPage) ReplaceURL(v *url.URL) {
+func (p *RequestPage) ReplaceURL(v *url.URL) {
 	p.url = v
 }
 
-func (p *requestPage) Size() (width int, height int) {
+func (p *RequestPage) Size() (width int, height int) {
 	return p.width, p.height
 }
 
-type browserPage struct {
+type BrowserPage struct {
 	url        *url.URL
 	dispatcher Dispatcher
 }
 
-func (p browserPage) Title() string {
+func (p BrowserPage) Title() string {
 	return Window().
 		Get("document").
 		Get("title").
 		String()
 }
 
-func (p browserPage) SetTitle(v string) {
+func (p BrowserPage) SetTitle(v string) {
 	Window().Get("document").Set("title", v)
 	p.metaByProperty("og:title").setAttr("content", v)
 }
 
-func (p browserPage) Lang() string {
+func (p BrowserPage) Lang() string {
 	return Window().
 		Get("document").
 		Get("documentElement").
@@ -160,66 +160,66 @@ func (p browserPage) Lang() string {
 		String()
 }
 
-func (p browserPage) SetLang(v string) {
+func (p BrowserPage) SetLang(v string) {
 	Window().
 		Get("document").
 		Get("documentElement").
 		Set("lang", v)
 }
 
-func (p browserPage) Description() string {
+func (p BrowserPage) Description() string {
 	return p.metaByName("description").getAttr("content")
 }
 
-func (p browserPage) SetDescription(v string) {
+func (p BrowserPage) SetDescription(v string) {
 	p.metaByName("description").setAttr("content", v)
 	p.metaByProperty("og:description").setAttr("content", v)
 }
 
-func (p browserPage) Author() string {
+func (p BrowserPage) Author() string {
 	return p.metaByName("author").getAttr("content")
 }
 
-func (p browserPage) SetAuthor(v string) {
+func (p BrowserPage) SetAuthor(v string) {
 	p.metaByName("author").setAttr("content", v)
 }
 
-func (p browserPage) Keywords() string {
+func (p BrowserPage) Keywords() string {
 	return p.metaByName("keywords").getAttr("content")
 }
 
-func (p browserPage) SetKeywords(v ...string) {
+func (p BrowserPage) SetKeywords(v ...string) {
 	p.metaByName("keywords").setAttr("content", strings.Join(v, ", "))
 }
 
-func (p browserPage) SetLoadingLabel(v string) {
+func (p BrowserPage) SetLoadingLabel(v string) {
 }
 
-func (p browserPage) Image() string {
+func (p BrowserPage) Image() string {
 	return p.metaByProperty("og:image").getAttr("content")
 }
 
-func (p browserPage) SetImage(v string) {
+func (p BrowserPage) SetImage(v string) {
 	p.metaByProperty("og:image").setAttr("content", p.dispatcher.resolveStaticResource(v))
 }
 
-func (p browserPage) URL() *url.URL {
+func (p BrowserPage) URL() *url.URL {
 	if p.url != nil {
 		return p.url
 	}
 	return Window().URL()
 }
 
-func (p browserPage) ReplaceURL(v *url.URL) {
+func (p BrowserPage) ReplaceURL(v *url.URL) {
 	Window().replaceHistory(v)
 	p.metaByProperty("og:url").setAttr("content", v.String())
 }
 
-func (p browserPage) Size() (width int, height int) {
+func (p BrowserPage) Size() (width int, height int) {
 	return Window().Size()
 }
 
-func (p browserPage) metaByName(v string) Value {
+func (p BrowserPage) metaByName(v string) Value {
 	meta := Window().
 		Get("document").
 		Call("querySelector", "meta[name='"+v+"']")
@@ -237,7 +237,7 @@ func (p browserPage) metaByName(v string) Value {
 	return meta
 }
 
-func (p browserPage) metaByProperty(v string) Value {
+func (p BrowserPage) metaByProperty(v string) Value {
 	meta := Window().
 		Get("document").
 		Call("querySelector", "meta[property='"+v+"']")

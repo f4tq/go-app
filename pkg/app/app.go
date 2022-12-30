@@ -102,48 +102,60 @@ func RunWhenOnBrowser() {
 	if IsServer {
 		return
 	}
+	disp := &Engine{
+		FrameRate: engineUpdateRate,
+	}
+	disp.Config()
+}
 
+func (disp *Engine) Config() {
 	defer func() {
 		err := recover()
 		displayLoadError(err)
 		panic(err)
 	}()
-
 	rootPrefix = Getenv("GOAPP_ROOT_PREFIX")
 	isInternalURL = internalURLChecker()
-	staticResourcesResolver := newClientStaticResourceResolver(Getenv("GOAPP_STATIC_RESOURCES_URL"))
-
-	disp := Engine{
-		FrameRate:              engineUpdateRate,
-		LocalStorage:           NewJSStorage("localStorage"),
-		SessionStorage:         NewJSStorage("sessionStorage"),
-		StaticResourceResolver: staticResourcesResolver,
-		ActionHandlers:         actionHandlers,
+	if disp.LocalStorage == nil {
+		disp.LocalStorage = NewJSStorage("localStorage")
 	}
-	disp.Page = browserPage{dispatcher: &disp}
-	disp.Body = newClientBody(&disp)
-	disp.init()
+	if disp.SessionStorage == nil {
+		disp.SessionStorage = NewJSStorage("sessionStorage")
+	}
+	if disp.StaticResourceResolver == nil {
+		 disp.StaticResourceResolver = newClientStaticResourceResolver(Getenv("GOAPP_STATIC_RESOURCES_URL"))
+	}
+	if disp.ActionHandlers == nil {
+		disp.ActionHandlers =actionHandlers
+	}
+	if disp.Page == nil {
+		disp.Page = BrowserPage{dispatcher: disp}
+	}
+	if disp.Body == nil {
+		disp.Body = NewClientBody(disp)
+	}
+	disp.Once()
 	defer disp.Close()
 
 	window.setBody(disp.Body)
 
-	onAchorClick := FuncOf(onAchorClick(&disp))
+	onAchorClick := FuncOf(OnAchorClick(disp))
 	defer onAchorClick.Release()
 	Window().Set("onclick", onAchorClick)
 
-	onPopState := FuncOf(onPopState(&disp))
+	onPopState := FuncOf(onPopState(disp))
 	defer onPopState.Release()
 	Window().Set("onpopstate", onPopState)
 
-	goappNav := FuncOf(goappNav(&disp))
+	goappNav := FuncOf(goappNav(disp))
 	defer goappNav.Release()
 	Window().Set("goappNav", goappNav)
 
-	onAppUpdate := FuncOf(onAppUpdate(&disp))
+	onAppUpdate := FuncOf(onAppUpdate(disp))
 	defer onAppUpdate.Release()
 	Window().Set("goappOnUpdate", onAppUpdate)
 
-	onAppInstallChange := FuncOf(onAppInstallChange(&disp))
+	onAppInstallChange := FuncOf(onAppInstallChange(disp))
 	defer onAppInstallChange.Release()
 	Window().Set("goappOnAppInstallChange", onAppInstallChange)
 
@@ -153,7 +165,7 @@ func RunWhenOnBrowser() {
 	closeAppOrientationChange := Window().AddEventListener("orientationchange", onAppOrientationChange)
 	defer closeAppOrientationChange()
 
-	performNavigate(&disp, Window().URL(), false)
+	performNavigate(disp, Window().URL(), false)
 	disp.start(context.Background())
 }
 
@@ -195,7 +207,7 @@ func internalURLChecker() func(string) bool {
 	}
 }
 
-func newClientBody(d Dispatcher) *htmlBody {
+func NewClientBody(d Dispatcher) *htmlBody {
 	ctx, cancel := context.WithCancel(context.Background())
 	body := &htmlBody{
 		htmlElement: htmlElement{
@@ -225,7 +237,7 @@ func newClientBody(d Dispatcher) *htmlBody {
 	return body
 }
 
-func onAchorClick(d Dispatcher) func(Value, []Value) any {
+func OnAchorClick(d Dispatcher) func(Value, []Value) any {
 	return func(this Value, args []Value) any {
 		event := Event{Value: args[0]}
 		elem := event.Get("target")

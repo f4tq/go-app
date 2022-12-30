@@ -195,7 +195,7 @@ func (e *Engine) Mount(v UI) {
 }
 
 func (e *Engine) Nav(u *url.URL) {
-	if p, ok := e.Page.(*requestPage); ok {
+	if p, ok := e.Page.(*RequestPage); ok {
 		p.ReplaceURL(u)
 	}
 
@@ -238,7 +238,7 @@ func (e *Engine) AppResize() {
 	})
 }
 
-func (e *Engine) init() {
+func (e *Engine) Once() {
 	e.initOnce.Do(func() {
 		if e.FrameRate <= 0 {
 			e.FrameRate = 60
@@ -246,7 +246,7 @@ func (e *Engine) init() {
 
 		if e.Page == nil {
 			u, _ := url.Parse("https://test.go-app.dev")
-			e.Page = &requestPage{url: u}
+			e.Page = &RequestPage{url: u}
 		}
 
 		if e.LocalStorage == nil {

@@ -13,7 +13,7 @@ func TestHandle(t *testing.T) {
 
 func TestActionManagerHandle(t *testing.T) {
 	e := Engine{}
-	e.init()
+	e.Once()
 	defer e.Close()
 
 	m := actionManager{}
@@ -63,7 +63,7 @@ func TestActionManagerHandle(t *testing.T) {
 
 func TestActionManagerCloseUnusedHandlers(t *testing.T) {
 	e := Engine{}
-	e.init()
+	e.Once()
 	defer e.Close()
 
 	m := actionManager{}
