@@ -105,10 +105,10 @@ func RunWhenOnBrowser() {
 	disp := &Engine{
 		FrameRate: engineUpdateRate,
 	}
-	disp.Config()
+	disp.Run()
 }
 
-func (disp *Engine) Config() {
+func (disp *Engine) Run() {
 	defer func() {
 		err := recover()
 		displayLoadError(err)
