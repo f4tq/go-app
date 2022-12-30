@@ -115,8 +115,8 @@ func RunWhenOnBrowser() {
 
 	disp := Engine{
 		FrameRate:              engineUpdateRate,
-		LocalStorage:           newJSStorage("localStorage"),
-		SessionStorage:         newJSStorage("sessionStorage"),
+		LocalStorage:           NewJSStorage("localStorage"),
+		SessionStorage:         NewJSStorage("sessionStorage"),
 		StaticResourceResolver: staticResourcesResolver,
 		ActionHandlers:         actionHandlers,
 	}

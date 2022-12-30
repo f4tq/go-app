@@ -8,17 +8,17 @@ import (
 )
 
 func TestMemoryStorage(t *testing.T) {
-	testBrowserStorage(t, newMemoryStorage())
+	testBrowserStorage(t, NewMemoryStorage())
 }
 
 func TestJSLocalStorage(t *testing.T) {
 	testSkipNonWasm(t)
-	testBrowserStorage(t, newJSStorage("localStorage"))
+	testBrowserStorage(t, NewJSStorage("localStorage"))
 }
 
 func TestJSSessionStorage(t *testing.T) {
 	testSkipNonWasm(t)
-	testBrowserStorage(t, newJSStorage("sessionStorage"))
+	testBrowserStorage(t, NewJSStorage("sessionStorage"))
 }
 
 type obj struct {

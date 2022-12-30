@@ -250,11 +250,11 @@ func (e *Engine) init() {
 		}
 
 		if e.LocalStorage == nil {
-			e.LocalStorage = newMemoryStorage()
+			e.LocalStorage = NewMemoryStorage()
 		}
 
 		if e.SessionStorage == nil {
-			e.SessionStorage = newMemoryStorage()
+			e.SessionStorage = NewMemoryStorage()
 		}
 
 		if e.StaticResourceResolver == nil {

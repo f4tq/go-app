@@ -30,18 +30,18 @@ type BrowserStorage interface {
 	Clear()
 }
 
-type memoryStorage struct {
+type MemoryStorage struct {
 	mu   sync.RWMutex
 	data map[string][]byte
 }
 
-func newMemoryStorage() *memoryStorage {
-	return &memoryStorage{
+func NewMemoryStorage() *MemoryStorage {
+	return &MemoryStorage{
 		data: make(map[string][]byte),
 	}
 }
 
-func (s *memoryStorage) Set(k string, v any) error {
+func (s *MemoryStorage) Set(k string, v any) error {
 	b, err := json.Marshal(v)
 	if err != nil {
 		return err
@@ -53,7 +53,7 @@ func (s *memoryStorage) Set(k string, v any) error {
 	return nil
 }
 
-func (s *memoryStorage) Get(k string, v any) error {
+func (s *MemoryStorage) Get(k string, v any) error {
 	s.mu.RLock()
 	d, ok := s.data[k]
 	if !ok {
@@ -65,13 +65,13 @@ func (s *memoryStorage) Get(k string, v any) error {
 	return json.Unmarshal(d, v)
 }
 
-func (s *memoryStorage) Del(k string) {
+func (s *MemoryStorage) Del(k string) {
 	s.mu.Lock()
 	delete(s.data, k)
 	s.mu.Unlock()
 }
 
-func (s *memoryStorage) Clear() {
+func (s *MemoryStorage) Clear() {
 	s.mu.Lock()
 	for k := range s.data {
 		delete(s.data, k)
@@ -79,14 +79,14 @@ func (s *memoryStorage) Clear() {
 	s.mu.Unlock()
 }
 
-func (s *memoryStorage) Len() int {
+func (s *MemoryStorage) Len() int {
 	s.mu.RLock()
 	l := len(s.data)
 	s.mu.RUnlock()
 	return l
 }
 
-func (s *memoryStorage) Key(i int) (string, error) {
+func (s *MemoryStorage) Key(i int) (string, error) {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
 
@@ -103,16 +103,16 @@ func (s *memoryStorage) Key(i int) (string, error) {
 		Tag("len", s.Len())
 }
 
-type jsStorage struct {
+type JsStorage struct {
 	name  string
 	mutex sync.RWMutex
 }
 
-func newJSStorage(name string) *jsStorage {
-	return &jsStorage{name: name}
+func NewJSStorage(name string) *JsStorage {
+	return &JsStorage{name: name}
 }
 
-func (s *jsStorage) Set(k string, v any) (err error) {
+func (s *JsStorage) Set(k string, v any) (err error) {
 	defer func() {
 		r := recover()
 		if r != nil {
@@ -135,7 +135,7 @@ func (s *jsStorage) Set(k string, v any) (err error) {
 	return nil
 }
 
-func (s *jsStorage) Get(k string, v any) error {
+func (s *JsStorage) Get(k string, v any) error {
 	s.mutex.RLock()
 	defer s.mutex.RUnlock()
 
@@ -147,32 +147,32 @@ func (s *jsStorage) Get(k string, v any) error {
 	return json.Unmarshal([]byte(item.String()), v)
 }
 
-func (s *jsStorage) Del(k string) {
+func (s *JsStorage) Del(k string) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
 	Window().Get(s.name).Call("removeItem", k)
 }
 
-func (s *jsStorage) Clear() {
+func (s *JsStorage) Clear() {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
 	Window().Get(s.name).Call("clear")
 }
 
-func (s *jsStorage) Len() int {
+func (s *JsStorage) Len() int {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
 	return s.len()
 }
 
-func (s *jsStorage) len() int {
+func (s *JsStorage) len() int {
 	return Window().Get(s.name).Get("length").Int()
 }
 
-func (s *jsStorage) Key(i int) (string, error) {
+func (s *JsStorage) Key(i int) (string, error) {
 	if l := s.len(); i < 0 || i >= l {
 		return "", errors.New("index out of range").
 			Tag("index", i).
